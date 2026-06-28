@@ -1,4 +1,4 @@
-import { Day } from "../custom-types/types";
+import { Day } from "../../types/types";
 
 const billTypeStyles = {
   payday: "bg-green-500",

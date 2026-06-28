@@ -1,4 +1,4 @@
-import { Day } from "../custom-types/types";
+import { Day } from "../../types/types";
 import { mockBillsByDay } from "../lib/mockBills";
 import DayCard from "./Day";
 

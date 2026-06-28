@@ -8,6 +8,8 @@
 1.
 npm install prisma -D
 npm install @prisma/client
+npm install @prisma/adapter-better-sqlite3 better-sqlite3
+npx prisma generate
 
 2.
 npx prisma init --datasource-provider sqlite

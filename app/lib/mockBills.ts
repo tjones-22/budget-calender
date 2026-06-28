@@ -1,4 +1,4 @@
-import { Bill } from "../custom-types/types";
+import { Bill } from "../../types/types";
 
 export const mockBillsByDay: Record<number, Bill[]> = {
   1: [{ type: "payday", name: "Payday" }],

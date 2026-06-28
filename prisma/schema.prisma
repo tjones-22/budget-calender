@@ -1,8 +1,6 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
-// Get a free hosted Postgres database in seconds: `npx create-db`
-
 generator client {
   provider = "prisma-client"
   output   = "../app/generated/prisma"
@@ -13,29 +11,67 @@ datasource db {
 }
 
 model User {
-  id       Int     @id @default(autoincrement())
-  username String  @unique
-  password String
-  bills    Bills[]
-  bank     Bank?
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  username      String?   @unique
+  password      String?
+  accounts      Account[]
+  sessions      Session[]
+  bills         Bills[]
+  bank          Bank?
+}
+
+model Account {
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([provider, providerAccountId])
+}
+
+model Session {
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+
+  @@id([identifier, token])
 }
 
 model Bills {
-  id     Int      @id @default(autoincrement())
+  id     String   @id @default(cuid())
   type   String
   date   DateTime
-  userId Int
+  userId String
   user   User     @relation(fields: [userId], references: [id])
 
   @@index([userId])
 }
 
 model Bank {
-  id             Int      @id @default(autoincrement())
+  id             String   @id @default(cuid())
   savings        Float
   currentBalance Float
   lastUpdated    DateTime @default(now()) @updatedAt
-  userId         Int      @unique
+  userId         String   @unique
   user           User     @relation(fields: [userId], references: [id])
 }
-
