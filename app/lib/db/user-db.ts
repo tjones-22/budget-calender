@@ -1,31 +1,14 @@
-// app/lib/user-db.ts
 import { randomBytes, scrypt, timingSafeEqual } from "node:crypto";
 import { promisify } from "node:util";
+import type {
+  LoginWithCredentialsInput,
+  SignUpWithCredentialsInput,
+  UpdateBankStartingBalanceByUserIdInput,
+  UpdateBankStartingBalanceInput,
+} from "../../../types/types";
 import { prisma } from "./prisma";
 
 const scryptAsync = promisify(scrypt);
-
-type SignUpWithCredentialsInput = {
-  email?: string;
-  name?: string;
-  username: string;
-  password: string;
-};
-
-type LoginWithCredentialsInput = {
-  username: string;
-  password: string;
-};
-
-type UpdateBankStartingBalanceInput = {
-  username: string;
-  startingBalance: number;
-};
-
-type UpdateBankStartingBalanceByUserIdInput = {
-  userId: string;
-  startingBalance: number;
-};
 
 async function hashPassword(password: string) {
   const salt = randomBytes(16).toString("hex");
@@ -51,14 +34,12 @@ async function verifyPassword(password: string, hashedPassword: string) {
   return timingSafeEqual(storedBuffer, derivedKey);
 }
 
-// finds a user by email input
 export async function getUserByEmail(email: string) {
   return prisma.user.findUnique({
     where: { email },
   });
 }
 
-// Runs after Auth.js creates a new OAuth user.
 export async function setupNewOAuthUser(userId: string) {
   return prisma.bank.upsert({
     where: { userId },
@@ -71,7 +52,6 @@ export async function setupNewOAuthUser(userId: string) {
   });
 }
 
-// sign up with username / password
 export async function signUpWithUserCredentials({
   email,
   name,
@@ -114,7 +94,6 @@ export async function signUpWithUserCredentials({
   return { user };
 }
 
-// login with user credentials
 export async function loginWithUserCredentials({
   username,
   password,

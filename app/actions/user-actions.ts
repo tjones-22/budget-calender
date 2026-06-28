@@ -3,20 +3,12 @@
 import { signIn, signOut } from "@/auth";
 import { AuthError } from "next-auth";
 import { redirect } from "next/navigation";
-import { requireUser } from "../lib/session";
+import type { AuthFormState, BankFormState } from "../../types/types";
+import { requireUser } from "../lib/auth/session";
 import {
   signUpWithUserCredentials,
   updateBankStartingBalanceByUserId,
-} from "../lib/user-db";
-
-type AuthFormState = {
-  error?: string;
-};
-
-type BankFormState = {
-  error?: string;
-  success?: string;
-};
+} from "../lib/db/user-db";
 
 function getStringValue(formData: FormData, key: string) {
   const value = formData.get(key);

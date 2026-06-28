@@ -1,12 +1,7 @@
 "use client";
 
+import type { SubmitButtonProps } from "../../types/types";
 import { useFormStatus } from "react-dom";
-
-type SubmitButtonProps = {
-  children: React.ReactNode;
-  pendingText?: string;
-  className?: string;
-};
 
 export default function SubmitButton({
   children,
@@ -25,4 +20,3 @@ export default function SubmitButton({
     </button>
   );
 }
-
